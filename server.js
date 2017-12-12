@@ -1,37 +1,35 @@
-// server.js
-// where your node app starts
-
-// init project
+var mongodb = require('mongodb');
+var MongoClient = mongodb.MongoClient
 var express = require('express');
+var url = require('url')
 var app = express();
+var crypto = require('crypto');
 
+//environment variables
+var urlDB = process.env.MONGO_URI;
 // we've started you off with Express, 
 // but feel free to use whatever libs or frameworks you'd like through `package.json`.
 
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
 
-// http://expressjs.com/en/starter/basic-routing.html
-app.get("/", function (request, response) {
-  response.sendFile(__dirname + '/views/index.html');
+//application GET, handle query
+app.get("/url", function(req, res){
+  var linkRequest = url.parse(req.url).query;
+  console.log(linkRequest);
 });
 
-app.get("/dreams", function (request, response) {
-  response.send(dreams);
+//database connection
+MongoClient.connect(urlDB, function(err, db){
+  if (err){
+    console.log('Connection error: ' + err)
+  }
+  else {
+    //code will be here for DB operation
+    console.log("Connection successful!");
+  }
+  db.close();
 });
-
-// could also use the POST body instead of query string: http://expressjs.com/en/api.html#req.body
-app.post("/dreams", function (request, response) {
-  dreams.push(request.query.dream);
-  response.sendStatus(200);
-});
-
-// Simple in-memory store for now
-var dreams = [
-  "Find and count some sheep",
-  "Climb a really tall mountain",
-  "Wash the dishes"
-];
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
