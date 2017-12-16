@@ -1,27 +1,12 @@
-Welcome to the Glitch BETA
+URL Redirect - Node.js and MongoDB
 =========================
 
-Click `Show` in the header to see your app live. Updates to your code will instantly deploy and update live.
+Pretty simple application.
 
-**Glitch** is the friendly community where you'll build the app of your dreams. Glitch lets you instantly create, remix, edit, and host an app, bot or site, and you can invite collaborators or helpers to simultaneously edit code with you.
+Main routes are /url and /h
 
-Find out more [about Glitch](https://glitch.com/about).
+/url accepts http queries and stores them in MongoDB.  Returns a unique hash (using shorthash library) for each link.  The hash is predictable to prevent clicking blind if desired.
 
+/h accepts the shortened link and redirects the user to the original.
 
-Your Project
-------------
-
-On the front-end,
-- edit `public/client.js`, `public/style.css` and `views/index.html`
-- drag in `assets`, like images or music, to add them to your project
-
-On the back-end,
-- your app starts at `server.js`
-- add frameworks and packages in `package.json`
-- safely store app secrets in `.env` (nobody can see this but you and people you invite)
-
-
-Made by [Fog Creek](https://fogcreek.com/)
--------------------
-
-\ ゜o゜)ノ
+/q provides a query option to the user if they would like to see the URL before clicking it.
