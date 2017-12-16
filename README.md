@@ -1,9 +1,9 @@
 URL Redirect - Node.js and MongoDB
 =========================
 
-Pretty simple application.
+Very simple application.
 
-Main routes are /url and /h
+Main routes are /url, /h, /q
 
 /url accepts http queries and stores them in MongoDB.  Returns a unique hash (using shorthash library) for each link.  The hash is predictable to prevent clicking blind if desired.
 
