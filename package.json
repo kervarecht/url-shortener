@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "express": "^4.16.2",
-    "mongodb": "^3.0.0-rc0"
+    "mongodb": "^3.0.0-rc0",
+    "shorthash": "0.0.2"
   },
   "engines": {
     "node": "8.x"

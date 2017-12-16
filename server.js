@@ -3,32 +3,62 @@ var MongoClient = mongodb.MongoClient
 var express = require('express');
 var url = require('url')
 var app = express();
-var crypto = require('crypto');
-
+var sh = require('shorthash');
 //environment variables
 var urlDB = process.env.MONGO_URI;
-// we've started you off with Express, 
-// but feel free to use whatever libs or frameworks you'd like through `package.json`.
+var dbCollection = process.env.TEST_HASH_DB;
 
-// http://expressjs.com/en/starter/static-files.html
+
 app.use(express.static('public'));
 
-//application GET, handle query
+//application /URL GET, handle query
 app.get("/url", function(req, res){
   var linkRequest = url.parse(req.url).query;
-  console.log(linkRequest);
+  var mongoLinks = {
+    "original" : linkRequest,
+    "short" : sh.unique(linkRequest)
+  }
+  console.log(mongoLinks);
+  
+  MongoClient.connect(urlDB, function(err, client){
+    if (err) {
+      console.log("Connection issue: " + err);
+    }
+    var db = client.db('kervarecht-url-shortener-db');
+    var collection = db.collection('test-hash');
+    
+    collection.insert(mongoLinks, function(err, data){
+      if (err){
+        console.log("Operation error: " + err);
+      }
+      client.close();
+    });
+  });
+  res.send("snow-armadillo.glitch.me/h?" + mongoLinks.short);
 });
 
-//database connection
-MongoClient.connect(urlDB, function(err, db){
-  if (err){
-    console.log('Connection error: ' + err)
-  }
-  else {
-    //code will be here for DB operation
-    console.log("Connection successful!");
-  }
-  db.close();
+app.get("/h", function(req, res){
+  var hashLink = url.parse(req.url).query;
+  
+  MongoClient.connect(urlDB, function(err, client){
+    if (err){
+      console.log(err);
+    }
+    var db = client.db('kervarecht-url-shortener-db');
+    var collection = db.collection('test-hash');
+    collection.find({
+      "short": hashLink
+    },{
+      "original": 1
+    }).toArray(function(err, result){
+      if (err) {
+        console.log("Retrieval error: " + err);
+      }
+      console.log(result.original)
+      res.redirect(result[0].original);
+      client.close();
+    })
+  })
 });
 
 // listen for requests :)
