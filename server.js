@@ -23,7 +23,33 @@ app.get("/url", function(req, res){
   }
   
   mongoInsert(mongoLinks);
-  res.send("snow-armadillo.glitch.me/h?" + mongoLinks.short);
+  res.send("snow-armadillo.glitch.me/h?" + mongoLinks.short + "\n Need to check the link?  Try snow-armadillo.glitch.me/q?" + mongoLinks.short + " to see the link without being redirected!");
+});
+
+
+//route to query DB on hash, returns a full link viewable by the user they can click on if it looks safe.
+app.get("/q", function(req, res){
+  var hashLink = url.parse(req.url).query;
+  var docJSON = {
+      "short": hashLink
+    }
+    MongoClient.connect(urlDB, function(err, client){
+    if (err){
+      console.log(err);
+    }
+    var db = client.db('kervarecht-url-shortener-db');
+    var collection = db.collection('test-hash');
+    collection.find(docJSON,{
+      "original": 1
+    }).toArray(function(err, result){
+      if (err) {
+        console.log("Retrieval error: " + err);
+      }
+      console.log(result);
+      client.close();
+      res.send("Your URL: click to proceed <a href=" + result[0].original + ">" + result[0].original + "</a>");
+    });
+});
 });
 
 //application /h get, query for shorthash and return redirect
