@@ -3,6 +3,7 @@ var MongoClient = mongodb.MongoClient
 var express = require('express');
 var url = require('url')
 var app = express();
+var path = require('path');
 var sh = require('shorthash');
 //environment variables
 var urlDB = process.env.MONGO_URI;
@@ -13,6 +14,10 @@ var operation = require('./mongo-ops');
 var mongoInsert = operation.mongoInsert;
 
 app.use(express.static('public'));
+
+app.get("/", function(req, res){
+  res.sendFile(path.join(__dirname + "/views/index.html"));
+});
 
 //application /URL GET, handle query and store original URL, generate uniquer shorthash
 app.get("/url", function(req, res){

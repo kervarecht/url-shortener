@@ -9,42 +9,29 @@
 
 <!DOCTYPE html>
 <html>
+  <title>URL Redirect</title>
   <head>
-    <title>Welcome to Glitch!</title>
-    <meta name="description" content="A cool thing made with Glitch">
-    <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/style.css">
+    <h1>
+      URL Redirection
+    </h1>
   </head>
   <body>
-    <header>
-      <h1>
-        A Dream of the Future
-      </h1>
-    </header>
+    <header><h2>
+      URL Redirect - Node.js and MongoDB</h2></header>
+<p>
+  Very simple application.
+    </p>
+    <p>Main routes are /url, /h, /q</p>
 
-    <main>
-      <p class="bold">Oh hi,</p>
-      <p>Tell me your hopes and dreams:</p>
-      <form>
-        <input type="text" maxlength="100" placeholder="Dreams!">
-        <button type="submit">Submit</button>
-      </form>
-      <section class="dreams">
-        <ul id="dreams">
-        </ul>
-      </section>
-    </main>
+<p>/url accepts http queries and stores them in MongoDB. Returns a unique hash (using shorthash library) for each link. The hash is predictable to prevent clicking blind if desired.
+    </p>
+<p>/h accepts the shortened link and redirects the user to the original.
+    </p>
+<p>
+  /q provides a query option to the user if they would like to see the URL before clicking it.
 
-    <footer>
-      <a href="https://glitch.com">
-        Remix this in Glitch
-      </a>
-    </footer>
-
-    <!-- Your web-app is https, so your scripts need to be too -->
+    </p>
+        <!-- Your web-app is https, so your scripts need to be too -->
     <script src="https://code.jquery.com/jquery-2.2.1.min.js"
             integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
             crossorigin="anonymous"></script>
